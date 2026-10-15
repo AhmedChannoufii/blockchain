@@ -1,0 +1,52 @@
+==============================================================
+ TP1 - DISCUSSION : La confiance sans autorite centrale
+==============================================================
+
+Q1. A qui ou a quoi fait-on confiance dans une blockchain ?
+    => On ne fait pas confiance a UNE personne ou organisation.
+       On fait confiance a :
+         - Le CODE du protocole (les regles sont publiques et verifiables)
+         - La CRYPTOGRAPHIE (les hash sont mathematiquement solides)
+         - Le MECANISME DE CONSENSUS (la majorite du reseau valide)
+         - Le RESEAU lui-meme (des milliers de noeuds independants)
+
+Q2. Peut-on reellement dire qu'une blockchain fonctionne "sans confiance" ?
+    => Pas tout a fait. On parle plutot de "minimisation de la confiance".
+       On deplaceconfiance :
+         - On ne fait plus confiance a UNE autorite centrale
+         - Mais on fait confiance au protocole, aux regles, aux maths
+       De plus, il faut quand meme faire confiance aux donnees
+       saisies (la blockchain ne verifie pas leur veracite).
+
+Q3. Que se passe-t-il lorsque plusieurs participants ne sont pas d'accord ?
+    => Le mecanisme de consensus tranche :
+         - En Proof of Work : la chaine la plus longue (avec le plus
+           de calcul) est consideree comme valide.
+         - En Proof of Stake : les validateurs votent selon leurs regles.
+       La version minoritaire est abandonnee.
+       Dans des cas extremes, cela peut mener a un "fork" (division
+       de la blockchain en deux chaines separees).
+
+Q4. Quels sont les avantages d'un systeme decentralise ?
+    => - Pas de point de defaillance unique (si un noeud tombe,
+         le reseau continue de fonctionner)
+       - Pas d'autorite centrale qui peut censurer ou manipuler
+       - Transparence et auditabilite pour tous les participants
+       - Resistance a la censure et a la corruption
+       - Disponibilite continue (pas de maintenance = pas de coupure)
+
+Q5. Quels peuvent etre ses inconvenients ?
+    => - Plus lent qu'une base de donnees centralisee
+       - Consommation energetique importante (surtout Proof of Work)
+       - Gouvernance complexe (comment modifier les regles du protocole ?)
+       - Scalabilite limitee (nombre de transactions par seconde)
+       - Impossible de "corriger" une erreur une fois enregistree
+
+Q6. Dans quelles situations prefereriez-vous une autorite centrale ?
+    => - Quand la performance est prioritaire (banque interne, jeu video)
+       - Quand les donnees sont sensibles/privees et ne doivent pas
+         etre partagees
+       - Quand un seul acteur gere les donnees (inutile de decentraliser)
+       - En cas d'urgence (une banque centrale peut geler un compte
+         vole rapidement, une blockchain ne le peut pas)
+       - Quand la conformite legale impose une autorite responsable

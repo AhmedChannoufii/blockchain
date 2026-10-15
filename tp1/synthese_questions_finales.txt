@@ -1,0 +1,106 @@
+==============================================================
+ TP1 - SYNTHESE : Tableau recapitulatif
+==============================================================
+
+Question                      | Votre reponse                          | Exemple / Mot-cle
+------------------------------|----------------------------------------|----------------------
+Une blockchain est...         | Un registre numerique partage dans     | "block + chain"
+                              | lequel les infos sont groupees en      |
+                              | blocs relies cryptographiquement       |
+------------------------------|----------------------------------------|----------------------
+Un bloc contient...           | Un index, une transaction, le hash du  | index, transaction,
+                              | bloc precedent, et son propre hash     | previous_hash, hash
+------------------------------|----------------------------------------|----------------------
+Un hash sert a...             | Creer une empreinte numerique unique   | SHA-256
+                              | d'un contenu. Toute modification       |
+                              | change l'empreinte.                    |
+------------------------------|----------------------------------------|----------------------
+Les blocs sont lies grace a...| Le hash du bloc precedent stocke       | previous_hash
+                              | dans chaque bloc                       |
+------------------------------|----------------------------------------|----------------------
+Modifier un ancien bloc       | Une incoherence dans tous les blocs    | Cascade de hash
+entraine...                   | suivants (leurs hash ne correspondent  | invalides
+                              | plus)                                  |
+------------------------------|----------------------------------------|----------------------
+Un noeud est...               | Un ordinateur participant au reseau    | Mineurs, validateurs
+                              | blockchain (stocke, transmet ou verifie|
+                              | les informations)                      |
+------------------------------|----------------------------------------|----------------------
+Le consensus permet de...     | S'accorder sur l'etat valide du        | Majorite du reseau
+                              | registre sans autorite centrale        |
+------------------------------|----------------------------------------|----------------------
+Le Proof of Work repose sur...| La competition de puissance de calcul  | Bitcoin, mineurs
+                              | pour trouver une solution              |
+                              | cryptographique                        |
+------------------------------|----------------------------------------|----------------------
+Le Proof of Stake repose sur..| Des validateurs qui immobilisent des   | Ethereum, stake
+                              | cryptoactifs en garantie               |
+------------------------------|----------------------------------------|----------------------
+Un avantage de la blockchain  | Tracabilite, integrite des donnees,    | Registre partage,
+est...                        | registre partage entre acteurs         | immuable
+                              | independants                           |
+------------------------------|----------------------------------------|----------------------
+Une limite de la blockchain   | Performances faibles, consommation     | Lent, energivore,
+est...                        | energetique, confidentialite limitee   | transparent
+------------------------------|----------------------------------------|----------------------
+Un exemple d'utilisation est..| Tracabilite alimentaire (Carrefour),   | Bitcoin, Ethereum,
+                              | cryptomonnaies, certificats numeriques | supply chain
+
+
+==============================================================
+ TP1 - QUESTIONS FINALES
+==============================================================
+
+Q1. Qu'est-ce qu'une blockchain ?
+    Une blockchain est un registre numerique partage dans lequel
+    les informations sont regroupees en blocs relies entre eux
+    par des empreintes cryptographiques (hash). Plusieurs participants
+    peuvent conserver une copie de ce registre.
+
+Q2. Pourquoi utilise-t-on des hash ?
+    Le hash est une empreinte numerique du contenu d'un bloc.
+    Si le contenu change, le hash change aussi => on detecte
+    immediatement toute modification. Il garantit l'integrite des donnees.
+
+Q3. Pourquoi chaque bloc contient-il le hash du bloc precedent ?
+    Pour "chainer" les blocs. Modifier un ancien bloc change son hash,
+    ce qui cree une incoherence dans tous les blocs suivants.
+    Cette dependance rend les modifications retroactives detectables.
+
+Q4. Quelle est la difference entre un systeme centralise et
+    un systeme decentralise ?
+    Centralise    : une seule organisation controle le registre (ex: banque).
+                    => confiance en UNE entite.
+    Decentralise  : plusieurs noeuds independants partagent et valident
+                    le registre. => confiance dans le protocole et le reseau.
+
+Q5. Pourquoi avons-nous besoin d'un mecanisme de consensus ?
+    Sans consensus, plusieurs participants pourraient proposer des
+    versions differentes du registre et le reseau ne saurait pas
+    laquelle accepter. Le consensus etablit des regles pour que
+    tous s'accordent sur un meme etat valide.
+
+Q6. Quelle est la difference generale entre Proof of Work et
+    Proof of Stake ?
+    Proof of Work  : competition de puissance de calcul (mineurs).
+                     Tres securise mais consomme beaucoup d'energie. (Bitcoin)
+    Proof of Stake : les validateurs immobilisent des cryptoactifs.
+                     Beaucoup moins energivore. (Ethereum)
+
+Q7. Une information presente dans une blockchain est-elle
+    necessairement vraie ? Expliquez.
+    NON. La blockchain garantit que l'information N'A PAS ETE MODIFIEE
+    depuis son enregistrement, mais pas qu'elle etait vraie au depart.
+    Exemple : si un transporteur enregistre une fausse temperature,
+    la blockchain conserve fidellement... cette fausse temperature.
+
+Q8. Donnez un exemple dans lequel une blockchain peut etre utile.
+    Tracabilite alimentaire : plusieurs entreprises (producteur,
+    transporteur, distributeur) partagent un historique commun d'un
+    produit. Aucune ne peut modifier les donnees des autres.
+
+Q9. Donnez un exemple dans lequel une base de donnees classique
+    serait probablement suffisante.
+    La liste des etudiants d'une universite : un seul acteur gere
+    les donnees, pas besoin de decentralisation ni de consensus.
+    Une base de donnees classique est plus simple et plus performante.

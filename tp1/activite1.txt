@@ -1,0 +1,66 @@
+==============================================================
+ TP1 - ACTIVITE 1 : Construire une blockchain sur papier
+==============================================================
+
+ETAPE 1 : Les trois blocs relies
+---------------------------------
+
+  +------------------+     +------------------+     +------------------+
+  |    BLOC 1        |     |    BLOC 2        |     |    BLOC 3        |
+  |------------------|     |------------------|     |------------------|
+  | Index    : 1     |     | Index    : 2     |     | Index    : 3     |
+  | Tx : Alice -> Bob|     | Tx : Bob ->      |     | Tx : Charlie ->  |
+  |      10 euros    | --> |      Charlie     | --> |      Alice       |
+  |                  |     |      5 euros     |     |      2 euros     |
+  | Hash prec : 0000 |     | Hash prec : A123 |     | Hash prec : B456 |
+  | Hash actuel: A123|     | Hash actuel: B456|     | Hash actuel: C789|
+  +------------------+     +------------------+     +------------------+
+
+ETAPE 2 : Modification du Bloc 1
+----------------------------------
+  La transaction change :
+    "Alice envoie 10 euros a Bob"
+      devient
+    "Alice envoie 100 euros a Bob"
+
+  Le hash du Bloc 1 change donc :
+    A123  -->  Z999
+
+
+QUESTIONS
+----------
+
+Q1. Le hash du Bloc 1 est-il toujours le meme ?
+    NON. Le hash depend du contenu du bloc.
+    En modifiant la transaction (10 -> 100 euros),
+    le hash passe de A123 a Z999.
+
+Q2. Le Bloc 2 contient-il encore le bon hash du Bloc 1 ?
+    NON. Le Bloc 2 indique toujours "Hash precedent : A123"
+    mais le Bloc 1 a maintenant le hash Z999.
+    => Il y a une incoherence.
+
+Q3. La chaine est-elle toujours coherente ?
+    NON. La chaine est brisee entre le Bloc 1 et le Bloc 2 :
+      - Bloc 1 a le hash Z999
+      - Bloc 2 dit que son predecesseur a le hash A123
+      => Contradiction detectee.
+
+Q4. Que faudrait-il modifier pour reconstruire une chaine coherente ?
+    Il faudrait :
+      1. Recalculer le hash du Bloc 1 => Z999
+      2. Mettre a jour le "Hash precedent" du Bloc 2 => Z999
+         et recalculer le hash du Bloc 2 (qui change aussi)
+      3. Mettre a jour le "Hash precedent" du Bloc 3
+         et recalculer le hash du Bloc 3
+      => Toute la chaine a partir du bloc modifie doit etre recalculee.
+
+Q5. Pourquoi une modification ancienne devient-elle difficile a cacher
+    dans une vraie blockchain ?
+    Dans une vraie blockchain :
+      - Des milliers de noeuds possedent une copie de la chaine originale.
+      - Recalculer tous les blocs suivants necessite enormement de
+        puissance de calcul (Proof of Work).
+      - Meme si un attaquant recalcule tout, le reseau compare
+        sa version a celle des autres noeuds et rejette la version falsifiee.
+      => La modification est pratiquement impossible a cacher.

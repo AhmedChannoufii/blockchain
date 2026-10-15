@@ -1,0 +1,37 @@
+==============================================================
+ TP1 - ACTIVITE 2 : Qui doit-on croire ? (Le consensus)
+==============================================================
+
+SITUATION
+----------
+  Quatre participants possedent une copie du registre :
+    - Alice   => "Alice possede 50 euros"
+    - Bob     => "Alice possede 50 euros"
+    - Charlie => "Alice possede 50 euros"
+    - David   => "Alice possede 500 euros"  (different !)
+
+  Question : Quelle version le reseau doit-il accepter ?
+
+REPONSE
+--------
+  Le reseau doit accepter la version de la MAJORITE :
+    => Alice possede 50 euros (3 noeuds sur 4 sont d'accord).
+
+  David est isole dans sa version. Dans un reseau decentralise,
+  la version minoritaire est rejetee.
+
+POURQUOI LE CONSENSUS EST NECESSAIRE ?
+----------------------------------------
+  Sans mecanisme de consensus :
+    - Chaque participant pourrait proposer n'importe quelle version.
+    - Il serait impossible de determiner quelle version est valide.
+    - Un acteur malveillant pourrait introduire de fausses informations.
+
+  Le consensus permet au reseau de s'accorder sur UN SEUL etat
+  valide du registre, sans avoir besoin d'une autorite centrale.
+
+RETENIR
+--------
+  Dans un systeme bancaire  : la banque est l'autorite de reference.
+  Dans une blockchain       : c'est le protocole et la majorite du
+                               reseau qui font foi.

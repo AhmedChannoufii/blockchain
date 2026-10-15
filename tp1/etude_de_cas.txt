@@ -1,0 +1,82 @@
+==============================================================
+ TP1 - ETUDE DE CAS : Tracabilite alimentaire
+==============================================================
+
+SCENARIO
+---------
+  Chaine de production enregistree dans une blockchain :
+    Producteur -> Transporteur -> Entrepot -> Magasin -> Consommateur
+
+QUESTIONS
+----------
+
+Q1. Pourquoi est-il interessant de conserver l'historique d'un produit ?
+    => En cas de probleme sanitaire (contamination, rappel de produit),
+       on peut identifier exactement d'ou vient le probleme :
+       quel producteur, quel lot, quel transporteur...
+       Cela accelere les rappels et protege les consommateurs.
+
+Q2. Quel est l'interet d'avoir plusieurs acteurs qui partagent
+    le meme registre ?
+    => Aucun acteur ne peut modifier seul l'historique a son avantage.
+       Le producteur, le transporteur et le magasin ont tous
+       une copie => la transparence est garantie entre les parties.
+       Pas besoin de confier la gestion a une seule organisation.
+
+Q3. Que se passe-t-il si un acteur introduit volontairement
+    une fausse information ?
+    => La blockchain ENREGISTRE cette fausse information de facon
+       fiable... mais elle ne peut pas verifier que l'information
+       etait vraie au depart.
+       Exemple : un transporteur ecrit "temperature : 4C" alors
+       que le produit etait a 15C.
+       La blockchain conserve "4C" sans pouvoir detecter le mensonge.
+
+Q4. La blockchain peut-elle verifier que le produit etait reellement
+    conserve a la temperature declaree ?
+    => NON. La blockchain protege l'integrite des donnees enregistrees,
+       mais pas leur veracite a la source.
+       Si un humain saisit une fausse valeur, la blockchain la conserve.
+
+Q5. Comment pourrait-on ameliorer le systeme avec des capteurs
+    automatiques ?
+    => En connectant des capteurs IoT (Internet des Objets) qui mesurent
+       automatiquement la temperature et enregistrent les donnees
+       directement sur la blockchain SANS intervention humaine.
+       => On elimine le risque de fraude manuelle sur les donnees.
+       (ex : capteurs Bluetooth dans les camions refrigeres)
+
+
+==============================================================
+ TP1 - BLOCKCHAIN OU BASE DE DONNEES CLASSIQUE ?
+==============================================================
+
+Pour chaque situation, justifiez votre choix :
+
+1. Stocker les notes des etudiants d'un enseignant.
+   => BASE DE DONNEES CLASSIQUE
+      Un seul acteur (l'universite) gere les donnees.
+      Pas besoin de decentralisation. Plus simple et plus rapide.
+
+2. Suivre un produit entre dix entreprises independantes.
+   => BLOCKCHAIN
+      Dix entreprises independantes partagent un historique commun.
+      Aucune ne doit dependre de la base de donnees d'une autre.
+      La blockchain evite un point de confiance unique.
+
+3. Stocker les produits d'un petit magasin.
+   => BASE DE DONNEES CLASSIQUE
+      Un seul proprietaire, pas de partage multi-acteurs necessaire.
+      La blockchain serait surdimensionnee pour ce cas.
+
+4. Enregistrer des transferts de cryptoactifs entre utilisateurs.
+   => BLOCKCHAIN
+      C'est exactement l'usage pour lequel la blockchain a ete creee.
+      Pas d'autorite centrale, transparence, immuabilite requises.
+
+5. Partager des certificats numeriques verifiables entre plusieurs
+   organisations.
+   => BLOCKCHAIN
+      Plusieurs organisations independantes doivent pouvoir verifier
+      des certificats sans se fier a une base de donnees centrale.
+      (ex : diplomes, certifications professionnelles)
