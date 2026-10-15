@@ -1,81 +1,56 @@
+# TP2 - Exercice 2 : Creer son premier bloc
+# Ahmed Channoufi
+
 import hashlib
 
-# ============================================================
-# Exercise 2 - Create your first block
-# TP2: Creating a simple blockchain with Python
-# ============================================================
+print("=== EXERCICE 2 : Creation d'un premier bloc ===")
 
-print("=" * 50)
-print("EXERCISE 2 - Create Your First Block")
-print("=" * 50)
-
-# --- Step 2: Define the Bloc class ---
+# Definition de la classe Bloc
 class Bloc:
     def __init__(self, index, transaction, previous_hash):
         self.index = index
         self.transaction = transaction
         self.previous_hash = previous_hash
-        # Hash is automatically calculated when the block is created
+        # Calcul automatique du hash a la creation
         self.hash = self.calculer_hash()
 
     def calculer_hash(self):
-        """Calculate the SHA-256 hash of the block's content."""
-        contenu = (
-            str(self.index)
-            + "|"
-            + self.transaction
-            + "|"
-            + self.previous_hash
-        )
-        return hashlib.sha256(
-            contenu.encode("utf-8")
-        ).hexdigest()
+        # On concatene les donnees du bloc sous forme de chaine
+        contenu = str(self.index) + "|" + self.transaction + "|" + self.previous_hash
+        return hashlib.sha256(contenu.encode("utf-8")).hexdigest()
 
-# --- Step 3: Create a Bloc object ---
-bloc1 = Bloc(
-    1,
-    "Alice envoie 10 euros a Bob",
-    "0"
-)
+# Creation du premier bloc (bloc genesis)
+bloc1 = Bloc(1, "Alice envoie 10 euros a Bob", "0")
 
-print("\n--- Block 1 ---")
-print("Index        :", bloc1.index)
-print("Transaction  :", bloc1.transaction)
-print("Hash precedent:", bloc1.previous_hash)
-print("Hash actuel  :", bloc1.hash)
+print("\n--- Informations du Bloc 1 ---")
+print("Index           :", bloc1.index)
+print("Transaction     :", bloc1.transaction)
+print("Hash precedent  :", bloc1.previous_hash)
+print("Hash actuel     :", bloc1.hash)
 
-# --- Modification: 10 euros -> 100 euros ---
-print("\n--- After modifying: 10 euros -> 100 euros ---")
-bloc1_modified = Bloc(
-    1,
-    "Alice envoie 100 euros a Bob",   # <-- modified
-    "0"
-)
-print("Index        :", bloc1_modified.index)
-print("Transaction  :", bloc1_modified.transaction)
-print("Hash precedent:", bloc1_modified.previous_hash)
-print("Hash actuel  :", bloc1_modified.hash)
+# Test de modification : on change 10 euros en 100 euros
+print("\n--- Test de modification de la transaction ---")
+bloc1_modifie = Bloc(1, "Alice envoie 100 euros a Bob", "0")
+print("Hash original :", bloc1.hash)
+print("Hash modifie  :", bloc1_modifie.hash)
+print("Les deux hash sont identiques ?", bloc1.hash == bloc1_modifie.hash)
 
-print("\n--- Comparison ---")
-print("Original hash :", bloc1.hash)
-print("Modified hash :", bloc1_modified.hash)
-print("Same hash?    :", bloc1.hash == bloc1_modified.hash)
+# Reponses aux questions du TP
+print("\n=== Reponses aux questions ===")
+print("Q1 : Quel est le role de la methode __init__() ?")
+print("-> C'est le constructeur de la classe en Python. Il est execute automatiquement")
+print("   lorsqu'on instancie un nouvel objet Bloc pour initialiser ses attributs.")
 
-# --- Questions ---
-print("\n--- Answers to Questions ---")
-print("Q1. Role of __init__():")
-print("    It's the constructor: called automatically when creating a new Bloc object.")
-print("    It initializes index, transaction, previous_hash, and calculates the hash.")
+print("\nQ2 : Quel est le role de la ligne 'self.hash = self.calculer_hash()' ?")
+print("-> Elle permet de calculer et d'enregistrer l'empreinte numerique du bloc")
+print("   automatiquement des sa creation.")
 
-print("\nQ2. Role of self.hash = self.calculer_hash():")
-print("    Automatically computes and stores the block's hash at creation time.")
+print("\nQ3 : Pourquoi convertit-on index en chaine avec str(self.index) ?")
+print("-> Parce que l'index est un entier (int). Pour pouvoir le concatener avec")
+print("   les autres chaines de caracteres et l'encoder en utf-8, il faut le convertir en texte.")
 
-print("\nQ3. Why is index converted to string?")
-print("    sha256() needs bytes, so we build a string first.")
-print("    str(self.index) converts integer (e.g. 1) to '1' for string concatenation.")
+print("\nQ4 : Quels sont les attributs utilises pour calculer le hash du bloc ?")
+print("-> L'index, la transaction et le previous_hash.")
 
-print("\nQ4. Which attributes are used to calculate the hash?")
-print("    index + transaction + previous_hash (joined with '|')")
-
-print("\nQ5. What happens after modifying the transaction?")
-print("    The hash completely changes — even a small change produces a very different hash.")
+print("\nQ5 : Que constate-t-on apres modification de la transaction ?")
+print("-> Le hash du bloc change completement, meme en ne modifiant qu'un seul chiffre.")

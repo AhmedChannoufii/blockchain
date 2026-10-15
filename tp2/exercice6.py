@@ -1,15 +1,11 @@
+# TP2 - Exercice 6 : Experimentations et falsification
+# Ahmed Channoufi
+
 import hashlib
 
-# ============================================================
-# Exercise 6 - Experiment with modifications
-# TP2: Creating a simple blockchain with Python
-# ============================================================
+print("=== EXERCICE 6 : Tests de falsification et partie comprehension ===")
 
-print("=" * 50)
-print("EXERCISE 6 - Experiment with Modifications")
-print("=" * 50)
-
-# --- Bloc class ---
+# Definition de la classe Bloc
 class Bloc:
     def __init__(self, index, transaction, previous_hash):
         self.index = index
@@ -18,155 +14,139 @@ class Bloc:
         self.hash = self.calculer_hash()
 
     def calculer_hash(self):
-        contenu = (
-            str(self.index)
-            + "|"
-            + self.transaction
-            + "|"
-            + self.previous_hash
-        )
-        return hashlib.sha256(
-            contenu.encode("utf-8")
-        ).hexdigest()
+        contenu = str(self.index) + "|" + self.transaction + "|" + self.previous_hash
+        return hashlib.sha256(contenu.encode("utf-8")).hexdigest()
 
-# --- Integrity verifier ---
-def verifier_blockchain(blockchain):
-    for i in range(len(blockchain)):
-        bloc = blockchain[i]
+# Fonction de verification
+def verifier_blockchain(chaine):
+    for i in range(len(chaine)):
+        bloc = chaine[i]
+        # Verif 1 : integrite du contenu
         if bloc.hash != bloc.calculer_hash():
             return False
-        if i > 0:
-            if bloc.previous_hash != blockchain[i - 1].hash:
-                return False
+        # Verif 2 : liaison avec le bloc d'avant
+        if i > 0 and bloc.previous_hash != chaine[i - 1].hash:
+            return False
     return True
 
-def build_fresh_blockchain():
-    """Returns a fresh, valid 4-block blockchain."""
-    b1 = Bloc(1, "Alice envoie 10 euros a Bob",    "0")
-    b2 = Bloc(2, "Bob envoie 5 euros a Charlie",    b1.hash)
-    b3 = Bloc(3, "Charlie envoie 2 euros a Alice",  b2.hash)
-    b4 = Bloc(4, "David envoie 15 euros a Alice",   b3.hash)
+# Fonction utilitaire pour recreer une chaine propre de 4 blocs
+def creer_chaine():
+    b1 = Bloc(1, "Alice envoie 10 euros a Bob", "0")
+    b2 = Bloc(2, "Bob envoie 5 euros a Charlie", b1.hash)
+    b3 = Bloc(3, "Charlie envoie 2 euros a Alice", b2.hash)
+    b4 = Bloc(4, "David envoie 15 euros a Alice", b3.hash)
     return [b1, b2, b3, b4]
 
-# ===================================================
-# Experiment 1: Modify Bloc 2's transaction
-#               WITHOUT recalculating its hash
-# ===================================================
-print("\n--- Experiment 1: Modify Bloc 2 transaction (no hash recalc) ---")
-bc = build_fresh_blockchain()
-bc[1].transaction = "Bob envoie 9999 euros a Charlie"
-# hash NOT recalculated
-result1 = verifier_blockchain(bc)
-print(f"Verification result: {result1}")
-print("Explanation: Bloc 2's stored hash no longer matches its content => FAIL")
+# --- Manipulation 1 ---
+print("\n--- Manipulation 1 : Modifier la transaction du bloc 2 sans recalculer son hash ---")
+chaine1 = creer_chaine()
+chaine1[1].transaction = "Bob envoie 999 euros a Charlie"
+res1 = verifier_blockchain(chaine1)
+print("Resultat de la verification :", res1)
+print("-> Invalide car le hash enregistre ne correspond plus au texte modifie.")
 
-# ===================================================
-# Experiment 2: Modify Bloc 3's previous_hash
-# ===================================================
-print("\n--- Experiment 2: Modify Bloc 3's previous_hash ---")
-bc = build_fresh_blockchain()
-bc[2].previous_hash = "FAKEHASH000"
-result2 = verifier_blockchain(bc)
-print(f"Verification result: {result2}")
-print("Explanation: Bloc 3's previous_hash no longer matches Bloc 2's hash => FAIL")
+# --- Manipulation 2 ---
+print("\n--- Manipulation 2 : Modifier le previous_hash du bloc 3 ---")
+chaine2 = creer_chaine()
+chaine2[2].previous_hash = "00000000000000000000"
+res2 = verifier_blockchain(chaine2)
+print("Resultat de la verification :", res2)
+print("-> Invalide car le lien avec le bloc 2 est coupe.")
 
-# ===================================================
-# Experiment 3: Correctly add a 5th block
-# ===================================================
-print("\n--- Experiment 3: Correctly add a 5th block ---")
-bc = build_fresh_blockchain()
-b5 = Bloc(5, "Eve envoie 7 euros a David", bc[-1].hash)
-bc.append(b5)
-result3 = verifier_blockchain(bc)
-print(f"Verification result: {result3}")
-print("Explanation: Bloc 5 correctly references Bloc 4's hash => PASS")
+# --- Manipulation 3 ---
+print("\n--- Manipulation 3 : Ajouter correctement un 5eme bloc ---")
+chaine3 = creer_chaine()
+b5 = Bloc(5, "Eve envoie 7 euros a David", chaine3[-1].hash)
+chaine3.append(b5)
+res3 = verifier_blockchain(chaine3)
+print("Resultat de la verification :", res3)
+print("-> Valide car le 5eme bloc a bien pris le hash du bloc 4.")
 
-# ===================================================
-# Experiment 4: Modify Bloc 1 transaction,
-#               recalculate ONLY Bloc 1's hash
-# ===================================================
-print("\n--- Experiment 4: Modify Bloc 1, recalculate only Bloc 1's hash ---")
-bc = build_fresh_blockchain()
-bc[0].transaction = "Alice envoie 10000 euros a Bob"
-bc[0].hash = bc[0].calculer_hash()  # Bloc 1's hash is now different
-# But Bloc 2's previous_hash still points to the OLD hash of Bloc 1
-result4 = verifier_blockchain(bc)
-print(f"Verification result: {result4}")
-print("Explanation: Bloc 1's hash changed, but Bloc 2's previous_hash is stale => FAIL")
+# --- Manipulation 4 ---
+print("\n--- Manipulation 4 : Modifier le bloc 1 et recalculer SEULEMENT son hash ---")
+chaine4 = creer_chaine()
+chaine4[0].transaction = "Alice envoie 500 euros a Bob"
+chaine4[0].hash = chaine4[0].calculer_hash()
+res4 = verifier_blockchain(chaine4)
+print("Resultat de la verification :", res4)
+print("-> Invalide car le bloc 2 contient encore l'ancien hash du bloc 1.")
 
-# ===================================================
-# Experiment 5: Modify Bloc 1, recalculate ALL hashes
-# ===================================================
-print("\n--- Experiment 5: Modify Bloc 1, recalculate ALL subsequent hashes ---")
-bc = build_fresh_blockchain()
-# Tamper with Bloc 1
-bc[0].transaction = "Alice envoie 10000 euros a Bob"
-bc[0].hash = bc[0].calculer_hash()
-# Update all subsequent blocks' previous_hash and hash
-for i in range(1, len(bc)):
-    bc[i].previous_hash = bc[i-1].hash
-    bc[i].hash = bc[i].calculer_hash()
-result5 = verifier_blockchain(bc)
-print(f"Verification result: {result5}")
-print("Explanation: All hashes recalculated => local verification PASSES!")
-print("BUT in a real blockchain, the network would reject this because:")
-print("  - Other nodes have the original chain")
-print("  - Proof of Work / Stake makes recalculating all blocks extremely costly")
+# --- Manipulation 5 ---
+print("\n--- Manipulation 5 : Modifier le bloc 1 et recalculer TOUS les hashs suivants ---")
+chaine5 = creer_chaine()
+chaine5[0].transaction = "Alice envoie 500 euros a Bob"
+chaine5[0].hash = chaine5[0].calculer_hash()
 
-# ===================================================
-# Summary Table
-# ===================================================
-print("\n" + "=" * 60)
-print("RESULTS TABLE")
-print("=" * 60)
-print(f"{'Experiment':<15} {'Result':<10} {'Explanation'}")
-print("-" * 60)
-print(f"{'1':<15} {'FAIL' if not result1 else 'PASS':<10} Bloc 2 content changed, hash not updated")
-print(f"{'2':<15} {'FAIL' if not result2 else 'PASS':<10} Bloc 3's chain link broken")
-print(f"{'3':<15} {'PASS' if result3 else 'FAIL':<10} 5th block added correctly")
-print(f"{'4':<15} {'FAIL' if not result4 else 'PASS':<10} Only Bloc 1's hash updated, chain broken at Bloc 2")
-print(f"{'5':<15} {'PASS' if result5 else 'FAIL':<10} All hashes updated (bypasses local check, not network)")
+# On recalcule en cascade
+for i in range(1, len(chaine5)):
+    chaine5[i].previous_hash = chaine5[i - 1].hash
+    chaine5[i].hash = chaine5[i].calculer_hash()
 
-# --- Part IV: Comprehension Questions ---
-print("\n" + "=" * 60)
-print("PART IV - COMPREHENSION QUESTIONS")
-print("=" * 60)
+res5 = verifier_blockchain(chaine5)
+print("Resultat de la verification locale :", res5)
+print("-> En local, la fonction renvoie True car tous les liens ont ete mis a jour.")
+print("   MAIS sur un vrai reseau, cette chaine serait rejetee par les autres noeuds.")
 
-answers = {
-    "Q1 - What is a cryptographic hash function?":
-        "A function that converts data of any size into a fixed-size fingerprint.\n"
-        "       It's deterministic, one-way, and collision-resistant.",
-    "Q2 - Role of SHA-256 in our program?":
-        "Generates a unique 64-character hex fingerprint for each block's content.",
-    "Q3 - Difference between transaction and hash?":
-        "Transaction: the actual data (e.g., 'Alice sends 10€ to Bob').\n"
-        "       Hash: the cryptographic fingerprint calculated FROM that data.",
-    "Q4 - Why does each block contain the previous hash?":
-        "To link blocks together. Changing any old block breaks all subsequent hashes.",
-    "Q5 - What is the Genesis block?":
-        "The very first block. It has no predecessor so previous_hash = '0'.",
-    "Q6 - Why use a Python class for a block?":
-        "Classes bundle data (index, transaction, hash) and behavior (calculer_hash)\n"
-        "       into a single reusable structure.",
-    "Q7 - Why use a list for the blockchain?":
-        "A list maintains order. Blocks are stored sequentially (oldest to newest).",
-    "Q8 - Role of verifier_blockchain()?":
-        "Checks that no block's content was tampered with AND that all chain links are intact.",
-    "Q9 - What happens when a transaction is modified without recalculating hash?":
-        "The stored hash no longer matches the content => verifier returns False.",
-    "Q10 - Can an attacker recalculate all hashes after modification?":
-        "Locally yes (as shown in Experiment 5), but in a real network:\n"
-        "       - Proof of Work makes it computationally prohibitive\n"
-        "       - Other nodes have the original chain and would reject it",
-    "Q11 - Why is our program not a decentralized blockchain?":
-        "No network, no peers, no consensus, no cryptographic signatures.",
-    "Q12 - What features would make it a real blockchain?":
-        "1. P2P network of nodes\n"
-        "       2. Digital signatures for authentication\n"
-        "       3. Consensus mechanism (PoW or PoS)\n"
-        "       4. Distributed storage across multiple nodes",
-}
+# --- Tableau recapitulatif ---
+print("\n" + "=" * 55)
+print("TABLEAU RECAPITULATIF DES EXPERIENCES")
+print("=" * 55)
+print("1. Modif transaction bloc 2 (sans recalcul) : ECHEC (False)")
+print("2. Modif previous_hash bloc 3               : ECHEC (False)")
+print("3. Ajout propre d'un 5eme bloc              : REUSSITE (True)")
+print("4. Modif bloc 1 (recalcul bloc 1 seulement) : ECHEC (False)")
+print("5. Modif bloc 1 (recalcul de toute la chaine): REUSSITE locale (True)")
 
-for q, a in answers.items():
-    print(f"\n{q}")
-    print(f"    {a}")
+# --- Partie IV : Questions de comprehension ---
+print("\n" + "=" * 55)
+print("PARTIE IV : QUESTIONS DE COMPREHENSION")
+print("=" * 55)
+
+print("\nQ1 : Qu'est-ce qu'une fonction de hachage cryptographique ?")
+print("-> C'est un algorithme mathematique qui transforme n'importe quel texte ou fichier")
+print("   en une chaine de caracteres de taille fixe. Elle est a sens unique et")
+print("   la moindre modification de l'entree change completement la sortie.")
+
+print("\nQ2 : Quel est le role de SHA-256 dans notre programme ?")
+print("-> Il sert a creer une empreinte unique pour chaque bloc a partir de ses donnees.")
+
+print("\nQ3 : Quelle est la difference entre la transaction et le hash d'un bloc ?")
+print("-> La transaction est le message stocke (ex: qui envoie quoi a qui).")
+print("   Le hash est l'empreinte de securite calculee a partir de ce message et des autres champs.")
+
+print("\nQ4 : Pourquoi chaque bloc doit-il contenir le hash du bloc precedent ?")
+print("-> Pour creer la chaine. Si on modifie un bloc ancien, son hash change, ce qui invalide")
+print("   tous les blocs d'apres.")
+
+print("\nQ5 : Qu'est-ce que le bloc Genesis ?")
+print("-> C'est le tout premier bloc d'une blockchain. Comme il n'a pas de predecesseur,")
+print("   son 'previous_hash' vaut '0'.")
+
+print("\nQ6 : Pourquoi avoir cree une classe Bloc en Python ?")
+print("-> Pour regrouper proprement dans un meme objet les donnees (index, transaction, hash)")
+print("   et le comportement (la methode calculer_hash).")
+
+print("\nQ7 : Pourquoi la blockchain est-elle representee par une liste ?")
+print("-> Parce qu'une liste conserve l'ordre chronologique des blocs et permet")
+print("   de les parcourir facilement avec un index.")
+
+print("\nQ8 : A quoi sert la fonction verifier_blockchain() ?")
+print("-> A controler deux choses : que le contenu de chaque bloc n'a pas bouge,")
+print("   et que la liaison entre chaque bloc et son predecesseur est exacte.")
+
+print("\nQ9 : Que se passe-t-il si on change une transaction sans recalculer le hash ?")
+print("-> Le hash stocke ne correspond plus au texte du bloc, l'incoherence est")
+print("   immediatement detectee.")
+
+print("\nQ10 : Un attaquant peut-il recalculer tous les hashs apres une modification ?")
+print("-> Oui sur son propre ordinateur (comme en manipulation 5), mais dans une vraie blockchain")
+print("   les autres noeuds ont l'originale et refuseront sa version modifiee.")
+
+print("\nQ11 : Pourquoi ce programme n'est-il pas encore une vraie blockchain ?")
+print("-> Parce qu'il tourne en local sur une seule machine. Il n'y a pas de reseau pair-a-pair,")
+print("   pas de mecanisme de consensus (PoW/PoS) et pas de signatures de transactions.")
+
+print("\nQ12 : Que faudrait-il ajouter pour en faire une blockchain reelle ?")
+print("-> 1. Un reseau de plusieurs noeuds connectes.")
+print("   2. Des cles cryptographiques et signatures pour verifier qui envoie les fonds.")
+print("   3. Un algorithme de consensus (ex: Proof of Work avec difficulte de calcul).")
