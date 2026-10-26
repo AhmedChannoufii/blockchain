@@ -21,6 +21,7 @@ Les bases de Python suffisent pour commencer.
 |----|-------|-------------------------|
 | TP1 | Introduction | Les bases et le vocabulaire de la blockchain |
 | TP2 | Blockchain simple en Python | Hachage SHA-256, blocs, chaînage, vérification de l'intégrité |
+| TP3 | Minage et Proof of Work | Preuve de travail, nonce, difficulté, coût d'une falsification |
 
 D'autres TP seront ajoutés au fil du semestre.
 
