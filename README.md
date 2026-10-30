@@ -23,6 +23,7 @@ Les bases de Python suffisent pour commencer.
 | TP2 | Blockchain simple en Python | Hachage SHA-256, blocs, chaînage, vérification de l'intégrité |
 | TP3 | Minage et Proof of Work | Preuve de travail, nonce, difficulté, coût d'une falsification |
 | TP4 | Transactions et validation | Classe Transaction, gestion des soldes, double dépense, blocs multi-transactions |
+| TP5 | Cryptographie asymétrique & Signatures | Clés Ed25519, classe Portefeuille, signatures numériques, intégrité & non-répudiation |
 
 D'autres TP seront ajoutés au fil du semestre.
 
